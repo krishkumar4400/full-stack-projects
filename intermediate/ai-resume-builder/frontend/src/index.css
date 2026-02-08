@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Outfit:wght@100..900&display=swap');
+@import "tailwindcss";
+
+*{
+    font-family: "Outfit", sans-serif;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+@layer base {
+    button {
+        @apply cursor-pointer;
+    }
+
+    input:not([type='checkbox']) {
+        @apply outline-none focus:ring border border-gray-300 focus:ring-blue-500 focus:border-blue-500 rounded
+    }  
+}
+
+::-webkit-scrollbar{
+    display: none;
+}

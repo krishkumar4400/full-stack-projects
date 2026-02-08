@@ -1,0 +1,8 @@
+frontend: 
+assets 
+css 
+
+react libraries:
+    react-router-dom = for client side routing
+    react-icons
+
