@@ -26,7 +26,7 @@ export const addNewBlog = async (req, res) => {
     // check if all fields are present
     if (!title || !description || !category || !imageFile) {
       return res.json({
-        message: "Mising required fields2",
+        message: "Mising required fields",
         success: false,
       });
     }
