@@ -5,6 +5,7 @@ import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import { registerValidationSchema } from "../validations/request.validation.js";
 import { hashPassword } from "../utils/passwordHashing.utils.js";
+import { generateToken } from "../utils/jwtToken.utils.js";
 
 export async function userRegister(req, res) {
   try {
@@ -26,12 +27,12 @@ export async function userRegister(req, res) {
       });
     }
 
-    const hashedPassowrd = await hashPassword(password);
+    const hashedPassword = await hashPassword(password);
 
     const user = await User.create({
       name,
       email,
-      password: hashedPassowrd,
+      password: hashedPassword,
     });
 
     if (user) {
@@ -39,9 +40,7 @@ export async function userRegister(req, res) {
         userId: user._id,
       };
 
-      const token = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: "7d",
-      });
+      const token = await generateToken(user._id);
 
       return res
         .cookie("token", token, {
@@ -76,7 +75,7 @@ export async function userLogin(req, res) {
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
       return res.status(404).json({
-        message: "Incorrect email or passoword",
+        message: "Incorrect email or password",
         success: false,
       });
     }
@@ -90,12 +89,7 @@ export async function userLogin(req, res) {
       });
     }
 
-    const payload = {
-      userId: existingUser._id,
-    };
-    const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    const token = await generateToken(existingUser._id);
 
     return res
       .cookie("token", token, {
