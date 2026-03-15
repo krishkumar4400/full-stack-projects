@@ -1,10 +1,15 @@
+import { safeParse } from "zod";
 import User from "../Model/User.Model.js";
 import errorMessage from "../utils/errorMessage.utils.js";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
+import { registerValidationSchema } from "../validations/request.validation.js";
+import { hashPassword } from "../utils/passwordHashing.utils.js";
 
 export async function userRegister(req, res) {
   try {
+    const validationResult = safeParse(registerValidationSchema);
+
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
       return res.status(400).json({
@@ -21,12 +26,7 @@ export async function userRegister(req, res) {
       });
     }
 
-    const hashedPassowrd = await argon2.hash(password, {
-      type: argon2.argon2id, // best variant
-      memoryCost: 2 ** 16, // 64 MB
-      timeCost: 3, // iterations
-      parallelism: 1,
-    });
+    const hashedPassowrd = await hashPassword(password);
 
     const user = await User.create({
       name,
