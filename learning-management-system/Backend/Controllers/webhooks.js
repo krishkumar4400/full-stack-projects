@@ -49,5 +49,9 @@ export const clerkWebhooks = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    return res.json({
+      message: "Internal server error",
+      success: false
+    });
   }
 };
