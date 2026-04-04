@@ -22,7 +22,7 @@ await connectDB();
 
 // routes
 app.get("/", (req, res) => {
-  res.send("Hello Express");
+  res.send("Hello Express LMS Server");
 });
 
 app.post("/clerk", clerkWebhooks);
